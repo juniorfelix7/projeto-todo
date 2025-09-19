@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # Serviço da Aplicação (Laravel)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: projeto_novo_app # Nome único para o contêiner
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - projeto_novo_network
+
+  # Serviço do Web Server (Nginx)
+  nginx:
+    image: nginx:alpine
+    container_name: projeto_novo_nginx # Nome único
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8001}:80" # <-- Ponto chave 1: Porta da Aplicação
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - projeto_novo_network
+
+  # Serviço do Banco de Dados (MySQL)
+  db:
+    image: mysql:8.0
+    container_name: projeto_novo_db # Nome único
+    restart: unless-stopped
+    ports:
+      - "${DB_PORT:-3307}:3306" # <-- Ponto chave 2: Porta do Banco
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+    volumes:
+      - projeto_novo_db_data:/var/lib/mysql # <-- Ponto chave 3: Volume único
+    networks:
+      - projeto_novo_network
+ # NOVO SERVIÇO: PHPMYADMIN
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: projeto_novo_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - projeto_novo_network
+    depends_on:
+      - db
+
+# Definição de Rede e Volume
+networks:
+  projeto_novo_network:
+    driver: bridge
+
+volumes:
+  projeto_novo_db_data: # Nome único para o volume que guarda os dados do MySQL
+    driver: local

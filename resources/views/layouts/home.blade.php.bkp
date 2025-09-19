@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDoApp</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css"/>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <img src="/assets/images/logo.png" alt="logo"/>
+        </div>
+    
+        <div class="content">
+            <nav>
+                <a href="#" class="btn btn-primary">
+                    Criar Tarefa
+                </a>
+            </nav>
+            <main>
+                <section class="graph">
+                    <div class="graph_header">
+                        <h2>Progresso do dia</h2>
+                        <div class="graph_header-line"></div>
+                        <div class="graph_header-date">
+                            <img src="/assets/images/icon-prev.png" />
+                                09 de Setembro
+                            <img src="/assets/images/icon-next.png" />
+                        </div>
+                    
+                    </div>
+                    <div class="graph_header-subtitle"> Tarefas: <b>3/6</b></div>
+                    <div class="graph_placeholder"></div>
+                    <div class="task_left_footer">
+                        <img src="/assets/images/icon-info.png" alt="Tarefas restantes"/>
+                        Restam 3 tarefas a serem realizadas 
+                    </div>
+                </section>
+                <section class="list">
+                    <div class="list_header">
+                        <select class="list_header-select">
+                            <option value="1">Todas as tarefas</option>
+                            <option value="2">Tarefas concluídas</option>
+                            <option value="3">Tarefas pendentes</option>
+                        </select>
+                    </div>
+                    <div class="task_list">
+                        <div class="task">
+                            <div class="title">
+                                <input type="checkbox"/>
+                                <div class="task_title">Titulo da tarefa</div>
+                            </div>
+                            <div class="priority">
+                                <div class="sphere"></div>
+                                <div>Titulo da Tarefa</div>
+                            </div>
+                            <div class="actions">
+                                <a href="#">
+                                    <img src="/assets/images/icon-edit.png" alt="Editar"/>    
+                                </a>
+                                <a href="#">
+                                    <img src="/assets/images/icon-delete.png" alt="Excluir"/>    
+                                </a>
+                            </div>    
+
+                        </div>
+                        
+                    </div>      
+                </section>
+            </main>    
+        </div>
+    </div>
+</body>
+</html>
