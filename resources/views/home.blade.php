@@ -6,7 +6,25 @@
         <a href="{{route('category.create')}}" class="btn btn-primary" style="margin-left:10px;">
             Criar Categoria
         </a>
+        <form action="{{ route('logout') }}" method="POST" style="display: inline; margin-left: 10px;">
+            @csrf
+            <button type="submit" class="btn btn-secondary">
+                Sair
+            </button>
+        </form>
     </x-slot:btn>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-error">
+            {{ session('error') }}
+        </div>
+    @endif
 
 <section class="graph">
     <div class="graph_header">
@@ -137,7 +155,7 @@ function updateTaskList(tasks) {
                     <a href="{{ route('task.edit', ['id' => '']) }}${task.id}">
                         <img src="/assets/images/icon-edit.png" alt="Editar"/>
                     </a>
-                    <a href="{{ route('task.delete', ['id' => '']) }}${task.id}">
+                    <a href="{{ route('task.delete', ['id' => '']) }}${task.id}" onclick="return confirmDelete('${task.title}')">
                         <img src="/assets/images/icon-delete.png" alt="Excluir"/>
                     </a>
                 </div>
@@ -311,6 +329,11 @@ function showNotification(message, type) {
             document.body.removeChild(notification);
         }, 300);
     }, 3000);
+}
+
+// Função para confirmar exclusão de tarefa
+function confirmDelete(taskTitle) {
+    return confirm(`Tem certeza que deseja excluir a tarefa "${taskTitle}"?\n\nEsta ação não pode ser desfeita.`);
 }
 
 // Inicializar o gráfico quando a página carrega

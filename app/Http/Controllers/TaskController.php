@@ -14,7 +14,7 @@ class TaskController extends Controller
     }
 
     public function create(Request $request){
-        $categories = Category::all();
+        $categories = Category::where('user_id', auth()->id())->get();
         return view ('tasks.create', ['categories' => $categories]);
     }
 
@@ -29,11 +29,11 @@ class TaskController extends Controller
 
         // Buscar ou criar categoria
         $category = Category::firstOrCreate(
-            ['title' => $request->category],
+            ['title' => $request->category, 'user_id' => auth()->id()],
             [
                 'title' => $request->category,
                 'color' => '#007bff', // Cor padrão
-                'user_id' => 1 // Por enquanto usando user_id 1, depois pode ser auth()->id()
+                'user_id' => auth()->id()
             ]
         );
 
@@ -42,7 +42,7 @@ class TaskController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'due_date' => $request->due_date,
-            'user_id' => 1, // Por enquanto usando user_id 1, depois pode ser auth()->id()
+            'user_id' => auth()->id(),
             'category_id' => $category->id,
             'is_done' => false
         ]);
@@ -57,8 +57,8 @@ class TaskController extends Controller
             return redirect()->route('home')->with('error', 'ID da tarefa não fornecido.');
         }
         
-        $task = Task::with('category')->findOrFail($taskId);
-        $categories = Category::all();
+        $task = Task::with('category')->where('user_id', auth()->id())->findOrFail($taskId);
+        $categories = Category::where('user_id', auth()->id())->get();
         
         return view('tasks.edit', [
             'task' => $task,
@@ -77,16 +77,16 @@ class TaskController extends Controller
             'is_done' => 'nullable|boolean'
         ]);
 
-        // Buscar a tarefa
-        $task = Task::findOrFail($request->task_id);
+        // Buscar a tarefa do usuário autenticado
+        $task = Task::where('user_id', auth()->id())->findOrFail($request->task_id);
         
         // Buscar ou criar categoria
         $category = Category::firstOrCreate(
-            ['title' => $request->category],
+            ['title' => $request->category, 'user_id' => auth()->id()],
             [
                 'title' => $request->category,
                 'color' => '#007bff', // Cor padrão
-                'user_id' => 1 // Por enquanto usando user_id 1, depois pode ser auth()->id()
+                'user_id' => auth()->id()
             ]
         );
 
@@ -103,7 +103,21 @@ class TaskController extends Controller
     }
 
     public function delete(Request $request){
-        return redirect(route('home'));   
+        $taskId = $request->get('id');
+        
+        if (!$taskId) {
+            return redirect()->route('home')->with('error', 'ID da tarefa não fornecido.');
+        }
+        
+        try {
+            $task = Task::where('user_id', auth()->id())->findOrFail($taskId);
+            $taskTitle = $task->title; // Salvar título para mensagem
+            $task->delete();
+            
+            return redirect()->route('home')->with('success', "Tarefa '{$taskTitle}' excluída com sucesso!");
+        } catch (\Exception $e) {
+            return redirect()->route('home')->with('error', 'Erro ao excluir a tarefa. Tente novamente.');
+        }
     }
 
     public function updateStatus(Request $request){
@@ -112,7 +126,7 @@ class TaskController extends Controller
             'is_done' => 'required|boolean'
         ]);
 
-        $task = Task::findOrFail($request->task_id);
+        $task = Task::where('user_id', auth()->id())->findOrFail($request->task_id);
         $task->is_done = $request->is_done;
         $task->save();
 

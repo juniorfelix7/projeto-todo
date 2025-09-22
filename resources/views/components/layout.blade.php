@@ -13,9 +13,12 @@
 <body>
     <div class="container">
         <div class="sidebar">
-            <a href="{{route('home')}}">
-                <img src="/assets/images/logo2.png" alt="logo"/>
-            </a>
+            <div class="sidebar-top">
+                <a href="{{route('home')}}">
+                    <img src="/assets/images/logo2.png" alt="logo"/>
+                </a>
+            </div>
+            <a href="{{ route('user.profile') }}" class="sidebar-profile-icon"><img src="/assets/images/user-icon2.png" alt="Perfil do Usuário"/></a>
         </div>
     
         <div class="content">

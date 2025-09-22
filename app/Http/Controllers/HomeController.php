@@ -17,8 +17,10 @@ class HomeController extends Controller
         // Obter o filtro da requisição (1 = todas, 2 = concluídas, 3 = pendentes)
         $filter = $request->get('filter', 1);
         
-        // Filtrar tarefas pela data selecionada
-        $tasksQuery = Task::whereDate('due_date', $selectedDate->format('Y-m-d'))->with('category');
+        // Filtrar tarefas pela data selecionada e usuário autenticado
+        $tasksQuery = Task::whereDate('due_date', $selectedDate->format('Y-m-d'))
+            ->where('user_id', auth()->id())
+            ->with('category');
         
         // Aplicar filtro baseado no parâmetro
         switch($filter) {
@@ -34,8 +36,10 @@ class HomeController extends Controller
         
         $tasks = $tasksQuery->get();
         
-        // Calcular estatísticas (sempre baseadas em todas as tarefas da data)
-        $allTasks = Task::whereDate('due_date', $selectedDate->format('Y-m-d'))->get();
+        // Calcular estatísticas (sempre baseadas em todas as tarefas da data do usuário)
+        $allTasks = Task::whereDate('due_date', $selectedDate->format('Y-m-d'))
+            ->where('user_id', auth()->id())
+            ->get();
         $totalTasks = $allTasks->count();
         $completedTasks = $allTasks->where('is_done', true)->count();
         $pendingTasks = $totalTasks - $completedTasks;

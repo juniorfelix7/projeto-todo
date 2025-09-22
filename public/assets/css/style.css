@@ -279,6 +279,83 @@
     color: white;
 }
 
+/* Estilos para mensagens de alerta */
+.alert {
+    padding: 15px 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    font-family: Rubik, sans-serif;
+    font-weight: 600;
+    animation: slideDown 0.3s ease-out;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilos para páginas de autenticação */
+#login_section,
+#register_section {
+    max-width: 500px;
+    padding: 40px 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+#login_section h1,
+#register_section h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--text-dark);
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.auth-links {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.auth-links p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.auth-links a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.auth-links a:hover {
+    color: #4a2cff;
+    text-decoration: underline;
+}
+
 body{
     width: 100vw;
     height: 100vh;
@@ -293,7 +370,20 @@ body{
 
 .sidebar{
     width: 100px;
-    background-color: var(--color-primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    background-color: var(--background-light);
+}
+
+.sidebar-profile-icon {
+    margin-top: auto;
+}
+
+.sidebar-profile-icon img {
+    width: 40px; /* Ajuste o tamanho conforme necessário */
 }
 
 .sidebar img {
@@ -335,6 +425,9 @@ a.btn{
 main{
     display: flex;
     padding: 20px;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
 }
 
 section.graph{
@@ -399,10 +492,9 @@ h2{
 .list{
     padding: 5px 15px;
     flex:1;
+    height: 100%;
 }
-.list_header{
-    display: flex;
-}
+
 .list_header select{
    background-color: transparent;
    border: 0;
@@ -420,7 +512,7 @@ h2{
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-top: 20px;
+    margin-top: 50px;
 }
 .task{
     display: flex;

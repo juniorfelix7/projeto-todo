@@ -17,7 +17,7 @@
             <a href="{{route('task.edit', ['id' => $data['id']])}}">
                 <img src="/assets/images/icon-edit.png" alt="Editar"/>    
             </a>
-            <a href="{{route('task.delete', ['id' => $data['id']])}}">
+            <a href="{{route('task.delete', ['id' => $data['id']])}}" onclick="return confirmDelete('{{ $data['title'] }}')">
                 <img src="/assets/images/icon-delete.png" alt="Excluir"/>    
             </a>
         </div>    
